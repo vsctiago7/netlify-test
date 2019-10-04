@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import logo from "./logo.svg";
+import { apiUrl } from "./configs/apiUrl";
 import "./App.css";
 
 function App() {
@@ -23,9 +24,10 @@ function App() {
 
   const getServerlessMsg = () =>
     axios
-      .get("https://fercodes.netlify.com/.netlify/functions/serverless/hello")
+      .get(`${apiUrl}/.netlify/functions/serverless/hello`)
       .then(res => setSMsg(res.data))
       .catch(err => {
+        console.log(apiUrl);
         console.log(err);
         return "Error: Couldn't get message from server.";
       });

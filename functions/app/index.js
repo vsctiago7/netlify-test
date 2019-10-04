@@ -3,6 +3,8 @@ import cors from "cors";
 import morgan from "morgan";
 import bodyParser from "body-parser";
 import compression from "compression";
+// import proxy from "../utils/proxy";
+import httpProxy from "http-proxy-middleware";
 
 /* My express App */
 export default function expressApp() {
@@ -45,7 +47,17 @@ export default function expressApp() {
 
   // Setup routes
   app.use(routerBasePath, router);
+  app.use(
+    routerBasePath,
+    httpProxy("/.netlify/functions", {
+      target: "http://localhost:9000",
+      pathRewrite: {
+        "^/\\.netlify/functions": ""
+      }
+    })
+  );
 
+  
   // Apply express middlewares
   router.use(cors());
   router.use(bodyParser.json());
